@@ -41,21 +41,21 @@ class _NewTransactionState extends State<NewTransaction> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
-    ).then(
-      (pickedDate) {
-        if (pickedDate == null) {
-          return;
-        }
-        setState(() {
-          _selectedDate = pickedDate;
-        });
-      },
-    );
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
+    print('...');
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -64,18 +64,17 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
               controller: _titleController,
-              // onChanged: (value) {
-              //   titleInput = value;
+              onSubmitted: (_) => _submitData(),
+              // onChanged: (val) {
+              //   titleInput = val;
               // },
             ),
             TextField(
-              decoration: InputDecoration(
-                labelText: 'Amount',
-              ),
+              decoration: InputDecoration(labelText: 'Amount'),
               controller: _amountController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: TextInputType.number,
               onSubmitted: (_) => _submitData(),
-              // onChanged: (value) => amountInput = value,
+              // onChanged: (val) => amountInput = val,
             ),
             Container(
               height: 70,
@@ -84,15 +83,17 @@ class _NewTransactionState extends State<NewTransaction> {
                   Expanded(
                     child: Text(
                       _selectedDate == null
-                          ? 'No date chosen!'
-                          : 'Picked date : ${DateFormat.yMd().format(_selectedDate)}',
+                          ? 'No Date Chosen!'
+                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
                     ),
                   ),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     child: Text(
-                      'Chose date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      'Choose Date',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onPressed: _presentDatePicker,
                   ),
@@ -102,8 +103,7 @@ class _NewTransactionState extends State<NewTransaction> {
             RaisedButton(
               child: Text('Add Transaction'),
               color: Theme.of(context).primaryColor,
-              textColor:
-                  Colors.white, //Theme.of(context).textTheme.button.color,
+              textColor: Theme.of(context).textTheme.button.color,
               onPressed: _submitData,
             ),
           ],
